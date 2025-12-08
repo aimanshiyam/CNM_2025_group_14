@@ -1,3 +1,6 @@
+import numpy as np
+from variables import Nx, Nt, dt, dx, theta_new, theta_old, F, A, B, u_array
+
 # Copy initial state for the 'new' array for plotting
 theta_new = np.copy(theta_old)
 theta_initial = np.copy(theta_old)
@@ -27,7 +30,7 @@ for j in range(1, Nt + 1):
         k = I - 1 
 
         # Check if division by zero (shouldn't be if U != 0)
-        if A[k] == 0
+        if A[k] == 0:
             theta_new[I] = theta_old[I]
         else:
             theta_new[I] = (1.0 / A[k]) * (F[k] - B[k] * theta_new[I-1])
