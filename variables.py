@@ -3,12 +3,12 @@
 import numpy as np
 import pandas as pd
 
-#Initialise model demain and variables
+#Initialise model domain and variables
 def variables():
   L = 20.0    #domain length (m)
   U = 0.1     #velocity (m/s)
   T = 300     #domain time(s)
-  dx = 0.2    #spacial resolution (m)
+  dx = 0.2    #spatial resolution (m)
   dt = 10     #timestep (s)
   return(L, U, T, dx, dt)
 L, U, T, dx, dt = variables()
@@ -41,9 +41,10 @@ else:
   if len(u_array) != Nx-1:
     raise ValueError("Velocity array U(x) must be a list or array with Nx-1 values")
 
-#Values of A and B based on U, dx and dt
-A[:] = u_array * dt/dx
-B[:] = 1 - A[:]
+#Implicit upwind coefficients
+C = u_array * dt / dx
+A[:] = 1.0 + C    # coeff of theta_i^{n+1}
+B[:] = -C         # coeff of theta_{i-1}^{n+1}
 
 #Read in initial condictions 
 df = pd.read_csv("initial_conditions.csv", encoding="latin1")
